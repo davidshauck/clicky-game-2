@@ -15,27 +15,40 @@ class App extends Component {
   };
   // function for image being clicked
   clickImage = id => {
+    this.setState({ clickMessage: "Click on every image once without clicking the same one twice." })
     // create a variable for the index of the clicked image
     let index = this.state.friends.findIndex(friend => friend.id === id);
     // if the clicked image's clicked value is false...
     if (this.state.friends[index].clicked) {
-      this.setState({ clickMessage: "Sorry, that image has been clicked, you lose!" });
+      this.setState({ clickMessage: "Sorry, that image has been clicked, you lose! Start clicking to play again." });
       this.setState({ count: 0 });
+      this.state.friends.map(newArray => newArray.id === id).clicked = false;
+      this.state.friends.forEach(function(friendsArray){
+        friendsArray.clicked = false;
+        console.log(friendsArray);
+      })
+      console.log(this.state.friends)
       this.setState({})
-    } else {
-    // ...randomize the array
-    const friends = this.state.friends.sort(() => Math.random() - 0.5 );
-    // change the clicked image's clicked value to true
-    this.state.friends.find(newArray => newArray.id === id).clicked = true;
-    // update the state of friends
-    this.setState({ friends });
-    // update the state of the count
-    this.setState({ count: this.state.count + 1 });
-      if (this.state.count == parseInt(11)) {
-        this.setState({ clickMessage: "You win!" })
-        this.setState({ count: 0 })
-        this.setState({})
-      }
+      } else {
+      // ...randomize the array
+      const friends = this.state.friends.sort(() => Math.random() - 0.5 );
+      // change the clicked image's clicked value to true
+      this.state.friends.find(newArray => newArray.id === id).clicked = true;
+      // update the state of friends
+      this.setState({ friends });
+      // update the state of the count
+      this.setState({ count: this.state.count + 1 });
+        if (this.state.count === parseInt(11)) {
+          this.setState({ clickMessage: "You win!" })
+          this.setState({ count: 0 })
+          this.setState({})
+          this.state.friends.forEach(function(friendsArray){
+            friendsArray.clicked = false;
+            console.log(friendsArray);
+          })
+          console.log(this.state.friends);
+
+        }
     }
   };
 
